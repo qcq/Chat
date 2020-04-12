@@ -1,5 +1,7 @@
 add_subdirectory(common)
 add_subdirectory(util)
+add_subdirectory(3rdparty)
+add_subdirectory(server)
 
 include_directories(
     ${PROJECT_SOURCE_DIR}/src
