@@ -10,6 +10,9 @@ configure_file(ChatConfig.h.in src/ChatConfig.h)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+#
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
+
 set(BOOST_INCLUDEDIR /usr/include/boost169)
 set(BOOST_LIBRARYDIR /usr/lib64/boost169)
 

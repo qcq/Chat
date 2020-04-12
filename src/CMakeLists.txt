@@ -1,3 +1,6 @@
+add_subdirectory(common)
+add_subdirectory(util)
+
 include_directories(
     ${PROJECT_SOURCE_DIR}/src
 )
