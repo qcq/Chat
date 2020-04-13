@@ -25,8 +25,9 @@ So, I need to consider the difference between them. did below things:
 
 ### compile gtest by own
 
-    *The reason to upgrade of gcc, because gtest need a higher complier to compile*
+    The reason to upgrade of gcc, because gtest need a higher complier to compile
     or may be just pass in c++14 in cmake command will be ok.
+    may be under some platform can not found them, set PKG_CONFIG_PATH to /usr/lib64/pkgconfig
 
 1. git clone https://github.com/google/googletest.git
 
@@ -36,7 +37,7 @@ So, I need to consider the difference between them. did below things:
 
 4. cd build
 
-5. cmake -DCMAKE_CXX_COMPILER="c++" -DCMAKE_CXX_FLAGS="-std=c++17 -stdlib=libc++" ../
+5. cmake  -DCMAKE_CXX_FLAGS="-std=c++17" ..
 
 6. make
 
