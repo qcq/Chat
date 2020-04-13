@@ -8,7 +8,10 @@ include_directories(
 )
 
 # add the executable
-add_executable(Chat Chat.cpp)
+add_executable(Chat
+    Chat.cpp
+    $<TARGET_OBJECTS:${PROJECT_NAME}-server>
+)
 
 # An important detail is to  place target_link_libraries after the
 # add_executable and find_package lines, so all linked components are known.

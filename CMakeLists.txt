@@ -10,8 +10,10 @@ configure_file(ChatConfig.h.in src/ChatConfig.h)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-#
+# out the binary to bin folder of source path
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
+
+include(FindPkgConfig)
 
 set(BOOST_INCLUDEDIR /usr/include/boost169)
 set(BOOST_LIBRARYDIR /usr/lib64/boost169)
@@ -30,4 +32,10 @@ link_directories(
 )
 
 add_subdirectory(src)
-add_subdirectory(test)
+
+include(CTest)
+
+if(BUILD_TESTING)
+    #find_package(GTEST REQUIRED gtest)
+    add_subdirectory(test)
+endif()
