@@ -7,7 +7,7 @@ project(Chat VERSION 0.1)
 configure_file(ChatConfig.h.in src/ChatConfig.h)
 
 # specify the C++ standard
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # out the binary to bin folder of source path
@@ -36,6 +36,6 @@ add_subdirectory(src)
 include(CTest)
 
 if(BUILD_TESTING)
-    #find_package(GTEST REQUIRED gtest)
+    pkg_check_modules(GTEST REQUIRED gtest_main)
     add_subdirectory(test)
 endif()
