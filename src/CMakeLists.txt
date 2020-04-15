@@ -4,10 +4,6 @@ add_subdirectory(3rdparty)
 add_subdirectory(server)
 add_subdirectory(client)
 
-include_directories(
-    ${PROJECT_SOURCE_DIR}/src
-)
-
 # add the executable
 add_executable(ChatServer
     ChatServer.cpp
@@ -24,11 +20,13 @@ add_executable(ChatClient
 target_include_directories(ChatServer PUBLIC
                             $<INSTALL_INTERFACE:include>
                             $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}>
+                            ${CMAKE_SOURCE_DIR}/src/3rdparty
                             )
 
 target_include_directories(ChatClient PUBLIC
                             $<INSTALL_INTERFACE:include>
                             $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}>
+                            ${CMAKE_SOURCE_DIR}/src/3rdparty
                             )
 
 target_compile_options(ChatServer PRIVATE -Werror)
@@ -41,7 +39,9 @@ target_compile_features(ChatClient PRIVATE cxx_std_17)
 
 target_link_libraries(ChatServer
     PUBLIC
-        Boost::boost
+        Boost::thread
+        crypto
+        ssl
 )
 
 target_link_libraries(ChatClient

@@ -20,17 +20,10 @@ set(BOOST_LIBRARYDIR /usr/lib64/boost169)
 
 set(Boost_COMPONENTS date_time regex system thread)
 find_package(Boost REQUIRED ${Boost_COMPONENTS})
-
 find_package(PythonInterp REQUIRED)
 find_package(GTest REQUIRED)
 
-#include_directories(
-#    ${Boost_INCLUDE_DIRS}
-#)
-
-#link_directories(
-#    ${Boost_LIBRARY_DIRS}
-#)
+find_package(OpenSSL REQUIRED)
 
 add_subdirectory(src)
 
