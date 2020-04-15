@@ -23,13 +23,13 @@ find_package(Boost REQUIRED ${Boost_COMPONENTS})
 
 find_package(PythonInterp REQUIRED)
 
-include_directories(
-    ${Boost_INCLUDE_DIRS}
-)
+#include_directories(
+#    ${Boost_INCLUDE_DIRS}
+#)
 
-link_directories(
-    ${Boost_LIBRARY_DIRS}
-)
+#link_directories(
+#    ${Boost_LIBRARY_DIRS}
+#)
 
 add_subdirectory(src)
 

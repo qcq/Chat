@@ -1,13 +1,15 @@
-#ifndef CHAT_SERVER_SERVER_H_PP
-#define CHAT_SERVER_SERVER_H_PP
+#ifndef CHAT_SERVER_SERVER_HPP
+#define CHAT_SERVER_SERVER_HPP
 #include <map>
 
-namespace server {
-class Server {
+namespace server
+{
+class Server
+{
 public:
     Server();
-private:
 
+private:
 };
-}
+} // namespace server
 #endif
