@@ -12,7 +12,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # out the binary to bin folder of source path
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
+# set env of PKG_CONFIG_PATH of linux path of gtest
 set(ENV{PKG_CONFIG_PATH} "$ENV{PKG_CONFIG_PATH}:/usr/local/lib64/pkgconfig")
+# set env of PKG_CONFIG_PATH of mac path of gtest
+set(ENV{PKG_CONFIG_PATH} "$ENV{PKG_CONFIG_PATH}:/usr/local/Cellar/openssl@1.1/1.1.1f/lib/pkgconfig")
+
 include(FindPkgConfig)
 
 set(BOOST_INCLUDEDIR /usr/include/boost169)

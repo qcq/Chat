@@ -41,7 +41,7 @@ target_link_libraries(ChatServer
     PUBLIC
         Boost::thread
         OpenSSL::SSL
-        penSSL::Crypto
+        OpenSSL::Crypto
 )
 
 target_link_libraries(ChatClient
