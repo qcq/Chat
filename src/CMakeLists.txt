@@ -40,8 +40,8 @@ target_compile_features(ChatClient PRIVATE cxx_std_17)
 target_link_libraries(ChatServer
     PUBLIC
         Boost::thread
-        crypto
-        ssl
+        OpenSSL::SSL
+        penSSL::Crypto
 )
 
 target_link_libraries(ChatClient

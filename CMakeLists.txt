@@ -12,7 +12,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # out the binary to bin folder of source path
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
-set(ENV{PKG_CONFIG_PATH} "/usr/local/lib64/pkgconfig:$ENV{PKG_CONFIG_PATH}")
+set(ENV{PKG_CONFIG_PATH} "$ENV{PKG_CONFIG_PATH}:/usr/local/lib64/pkgconfig")
 include(FindPkgConfig)
 
 set(BOOST_INCLUDEDIR /usr/include/boost169)
