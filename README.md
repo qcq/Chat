@@ -16,6 +16,10 @@ Chat is one app which try to implement the C/S archecture. Chat is based on the 
 
 * consider add the support of protocal buf of google
 
+* spdlog https://github.com/gabime/spdlog
+
+    with spdlog to logging the log of project
+
 ## Hope for myself
 
 ## I hope I will insist on this project, which can be one behalf project of mine

@@ -25,6 +25,8 @@ find_package(GTest REQUIRED)
 
 find_package(OpenSSL REQUIRED)
 
+find_package(spdlog REQUIRED)
+
 add_subdirectory(src)
 
 include(CTest)
