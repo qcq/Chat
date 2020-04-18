@@ -6,6 +6,10 @@ Chat is one app which try to implement the C/S archecture. Chat is based on the 
 
 * websocket
 
+    come to this time, when I check more options for C++ version of websocket, ther exist boost.beast
+    except the websocketpp, but seems boost version is not easy to understand. But, I inist to learn
+    it with patience.
+
 * cmake
 
 * gtest
