@@ -27,11 +27,12 @@ void initLogger(const std::string& loggerName)
 
 int main()
 {
-    initLogger("server");
-    server::Server server;
-    std::cout << "hello , this is the first step to make a mircle." << std::endl;
     std::cout << "major:" << Chat_VERSION_MAJOR << " minor:" << Chat_VERSION_MINOR << std::endl;
+    initLogger("server");
+    auto server = std::make_shared<server::Server>();
+    server->initialize();
 
-    spdlog::warn("qcq yes I am fine");
+    server->run();
+    server->getIoService().run();
     return 0;
 }

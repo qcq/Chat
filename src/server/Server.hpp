@@ -11,28 +11,41 @@
 
 namespace server
 {
-class Server : public interface::IServer
+class Server : public interface::IServer, public std::enable_shared_from_this<Server>
 {
 public:
+    typedef std::weak_ptr<void> ConnHdl;
     Server();
 
-    void initialize();
+    void initialize() override;
 
-    void run();
+    void run() override;
 
-    bool isListening();
+    bool isListening() override;
 
-    void stop();
+    void stop() override;
 
-    void setDscp(unsigned int);
+    void setDscp(unsigned int) override;
 
-    ~Server() = default;
+    boost::asio::io_service& getIoService()
+    {
+        return ioService_;
+    }
+
+    ~Server();
 
 private:
-    void accept();
+    void accept() override;
 
-private:
+    void setHandlers();
+
+    void onOpen(ConnHdl con);
+    void onMessage(ConnHdl hdl, websocketpp::server<websocketpp::config::asio>::message_ptr ptr);
+
+private: boost::asio::io_context ioService_;
     websocketpp::server<websocketpp::config::asio> wsServer_;
+    uint16_t port_;
+    std::map<std::string, ConnHdl> connections_;
 };
 } // namespace server
 #endif
