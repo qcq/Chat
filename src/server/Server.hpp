@@ -27,7 +27,7 @@ public:
 
     void setDscp(unsigned int) override;
 
-    boost::asio::io_service& getIoService()
+    boost::asio::io_service &getIoService()
     {
         return ioService_;
     }
@@ -39,10 +39,13 @@ private:
 
     void setHandlers();
 
-    void onOpen(ConnHdl con);
+    void onOpen(ConnHdl hdl);
+    bool onValidate(ConnHdl hdl);
     void onMessage(ConnHdl hdl, websocketpp::server<websocketpp::config::asio>::message_ptr ptr);
+    void onClose(ConnHdl hdl);
 
-private: boost::asio::io_context ioService_;
+private:
+    boost::asio::io_context ioService_;
     websocketpp::server<websocketpp::config::asio> wsServer_;
     uint16_t port_;
     std::map<std::string, ConnHdl> connections_;

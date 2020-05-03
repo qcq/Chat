@@ -112,22 +112,62 @@ void Server::setHandlers()
             self->onOpen(hdl);
         });
 
+    wsServer_.set_validate_handler(
+        [self](ConnHdl hdl) -> bool {
+            return self->onValidate(hdl);
+        });
+
     wsServer_.set_message_handler(
         [self](ConnHdl hdl, websocketpp::server<websocketpp::config::asio>::message_ptr ptr) -> void {
             self->onMessage(hdl, ptr);
+        });
+
+    wsServer_.set_close_handler(
+        [self](ConnHdl hdl) -> void {
+            self->onClose(hdl);
         });
 }
 
 void Server::onOpen(ConnHdl hdl)
 {
-    SPDLOG_INFO("some body is try to connect me.");
+    SPDLOG_INFO("{} connect me.", wsServer_.get_con_from_hdl(hdl)->get_remote_endpoint());
     connections_[wsServer_.get_con_from_hdl(hdl)->get_remote_endpoint()] = hdl;
+}
+
+bool Server::onValidate(ConnHdl hdl)
+{
+    auto connPtr = wsServer_.get_con_from_hdl(hdl);
+    auto requestedSubprotocols = connPtr->get_requested_subprotocols();
+    for (const auto &protocol : requestedSubprotocols)
+    {
+        SPDLOG_WARN("{}", protocol);
+    }
+
+    // below code to set subprotocol
+    if (std::find(requestedSubprotocols.begin(), requestedSubprotocols.end(), "binary") !=
+        requestedSubprotocols.end())
+    {
+        //connPtr->select_subprotocol("binary");
+        return true;
+    }
+    else
+    {
+        SPDLOG_DEBUG("can't set binary as subprotocol");
+        return true;
+    }
 }
 
 void Server::onMessage(ConnHdl hdl, websocketpp::server<websocketpp::config::asio>::message_ptr ptr)
 {
-    auto message = std::string(ptr->get_raw_payload().begin(), ptr->get_raw_payload().end());
-    SPDLOG_DEBUG("message received.{}", message);
+    std::string message = ptr->get_payload();
+    SPDLOG_INFO("message received.{}", message);
     wsServer_.get_con_from_hdl(hdl)->send("yes you are here. congratulation");
+}
+
+void Server::onClose(ConnHdl hdl)
+{
+    // should remove the closed user
+    SPDLOG_INFO("{} disconnect me.", wsServer_.get_con_from_hdl(hdl)->get_remote_endpoint());
+    connections_.erase(wsServer_.get_con_from_hdl(hdl)->get_remote_endpoint());
 }
 } // namespace server
