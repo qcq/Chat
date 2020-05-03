@@ -48,7 +48,7 @@ private:
     boost::asio::io_context ioService_;
     websocketpp::server<websocketpp::config::asio> wsServer_;
     uint16_t port_;
-    std::map<std::string, ConnHdl> connections_;
+    std::map<ConnHdl, std::string, std::owner_less<ConnHdl>> connections_;
 };
 } // namespace server
 #endif

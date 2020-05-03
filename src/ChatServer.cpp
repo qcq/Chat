@@ -33,6 +33,6 @@ int main()
     server->initialize();
 
     server->run();
-    server->getIoService().run();
+    //server->getIoService().run();
     return 0;
 }

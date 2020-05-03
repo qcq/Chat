@@ -29,7 +29,7 @@ void Server::initialize()
     // std::ofstream fout(logName, std::ios::out);
 
     wsServer_.get_alog().set_ostream(&std::cout);
-    wsServer_.set_access_channels(websocketpp::log::alevel::all);
+    wsServer_.set_access_channels(websocketpp::log::alevel::all ^ websocketpp::log::alevel::frame_payload);
     wsServer_.set_error_channels(websocketpp::log::elevel::all);
 
     std::error_code initEc;
@@ -49,6 +49,7 @@ void Server::run()
 {
     SPDLOG_INFO("the server ready to accept the income connect.");
     accept();
+    wsServer_.run();
 }
 
 bool Server::isListening()
@@ -131,7 +132,7 @@ void Server::setHandlers()
 void Server::onOpen(ConnHdl hdl)
 {
     SPDLOG_INFO("{} connect me.", wsServer_.get_con_from_hdl(hdl)->get_remote_endpoint());
-    connections_[wsServer_.get_con_from_hdl(hdl)->get_remote_endpoint()] = hdl;
+    connections_[hdl] = "";
 }
 
 bool Server::onValidate(ConnHdl hdl)
@@ -168,6 +169,6 @@ void Server::onClose(ConnHdl hdl)
 {
     // should remove the closed user
     SPDLOG_INFO("{} disconnect me.", wsServer_.get_con_from_hdl(hdl)->get_remote_endpoint());
-    connections_.erase(wsServer_.get_con_from_hdl(hdl)->get_remote_endpoint());
+    connections_.erase(hdl);
 }
 } // namespace server
