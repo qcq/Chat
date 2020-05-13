@@ -133,6 +133,9 @@ void Server::onOpen(ConnHdl hdl)
 {
     SPDLOG_INFO("{} connect me.", wsServer_.get_con_from_hdl(hdl)->get_remote_endpoint());
     connections_[hdl] = "";
+    SPDLOG_INFO("{} users online", connections_.size());
+    auto path = wsServer_.get_con_from_hdl(hdl)->get_resource();
+    SPDLOG_INFO("request resource {}.", path);
 }
 
 bool Server::onValidate(ConnHdl hdl)
@@ -162,7 +165,11 @@ void Server::onMessage(ConnHdl hdl, websocketpp::server<websocketpp::config::asi
 {
     std::string message = ptr->get_payload();
     SPDLOG_INFO("message received.{}", message);
-    wsServer_.get_con_from_hdl(hdl)->send("yes you are here. congratulation");
+    // should update the name which can corresponding to the name of connection.
+    /*
+    which helps to manage the connection.
+    */
+    wsServer_.send(hdl, "yes you are here. congratulation", websocketpp::frame::opcode::text);
 }
 
 void Server::onClose(ConnHdl hdl)
@@ -170,5 +177,7 @@ void Server::onClose(ConnHdl hdl)
     // should remove the closed user
     SPDLOG_INFO("{} disconnect me.", wsServer_.get_con_from_hdl(hdl)->get_remote_endpoint());
     connections_.erase(hdl);
+
+    SPDLOG_INFO("{} users online", connections_.size());
 }
 } // namespace server

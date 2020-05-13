@@ -23,6 +23,7 @@ void initLogger(const std::string& loggerName)
     file_sink->set_level(spdlog::level::debug);
     spdlog::set_default_logger(std::make_shared<spdlog::logger>(loggerName,
         spdlog::sinks_init_list({console_sink, file_sink})));
+    spdlog::flush_every(std::chrono::seconds(5));
 }
 
 int main()
