@@ -168,6 +168,9 @@ void Server::onMessage(ConnHdl hdl, websocketpp::server<websocketpp::config::asi
     // should update the name which can corresponding to the name of connection.
     /*
     which helps to manage the connection.
+    one idea, with linux like command to chat with person
+    ls -- list current online user, can with options to query the user if the online user too many
+    cd -- get the user who you want talk with, and current the clinet should check to that user channel
     */
     wsServer_.send(hdl, "yes you are here. congratulation", websocketpp::frame::opcode::text);
 }
