@@ -34,17 +34,22 @@ public:
 
     ~Server();
 
-private:
+protected:
     void accept() override;
 
     void setHandlers();
 
     void onOpen(ConnHdl hdl);
+    std::string retrieveUserNameFromResource(const std::string &resource);
+    bool isNameExist(const std::string &userName, std::string &suggestName);
+
     bool onValidate(ConnHdl hdl);
     void onMessage(ConnHdl hdl, websocketpp::server<websocketpp::config::asio>::message_ptr ptr);
     void onClose(ConnHdl hdl);
 
 private:
+    const std::string NAME_LABEL;
+    const std::string SEPARATOR;
     boost::asio::io_context ioService_;
     websocketpp::server<websocketpp::config::asio> wsServer_;
     uint16_t port_;

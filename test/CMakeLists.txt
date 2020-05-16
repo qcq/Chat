@@ -1,5 +1,7 @@
 include_directories(
     ${GTEST_INCLUDE_DIRS}
+    ${OPENSSL_INCLUDE_DIR}
+    ${Boost_INCLUDE_DIRS}
 )
 
 link_directories(

@@ -1,11 +1,12 @@
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include "Server.hpp"
 
 namespace server
 {
 
-Server::Server() : port_(7890)
+Server::Server() : port_(7890), NAME_LABEL("name"), SEPARATOR("=")
 {
     // https://github.com/gabime/spdlog/wiki/0.-FAQ
     /*
@@ -136,27 +137,62 @@ void Server::onOpen(ConnHdl hdl)
     SPDLOG_INFO("{} users online", connections_.size());
     auto resource = wsServer_.get_con_from_hdl(hdl)->get_resource();
     SPDLOG_INFO("request resource {}.", resource);
-    auto position = resource.find("name");
+    auto userName = retrieveUserNameFromResource(resource);
+    std::string messageOut;
+    if (userName.empty())
+    {
+        SPDLOG_ERROR("not indicate the username value in resource {}", resource);
+        messageOut = "not indicate the username value in url";
+        wsServer_.send(hdl, messageOut, websocketpp::frame::opcode::text);
+        return;
+    }
+    // check whether same user name already exist, and give the suggest name.
+    std::string suggestName;
+    if (isNameExist(userName, suggestName))
+    {
+        std::stringstream out;
+        out << "The user name " << userName << "already used by others, may be you can use "
+            << suggestName << " instead.";
+        messageOut = out.str();
+        SPDLOG_ERROR(messageOut);
+        wsServer_.send(hdl, messageOut, websocketpp::frame::opcode::text);
+        return;
+    }
+    connections_[hdl] = userName;
+    messageOut = "welcome " + userName;
+    SPDLOG_DEBUG("{} connect me.", userName);
+    wsServer_.send(hdl, messageOut, websocketpp::frame::opcode::text);
+}
+
+std::string Server::retrieveUserNameFromResource(const std::string &resource)
+{
+    auto position = resource.find(NAME_LABEL);
     if (position == std::string::npos)
     {
         SPDLOG_ERROR("not indicate the username key in resource {}", resource);
-        return;
+        return "";
     }
-    position = resource.find("=", position);
+    position = resource.find(SEPARATOR, position);
     if (position == std::string::npos)
     {
         SPDLOG_ERROR("not indicate the username separator = in resource {}", resource);
-        return;
+        return "";
     }
     auto name = resource.substr(position + 1);
-    if (name.empty())
+    return name;
+}
+
+bool Server::isNameExist(const std::string &userName, std::string& suggestName)
+{
+    for (const auto &connection : connections_)
     {
-        SPDLOG_ERROR("not indicate the username value in resource {}", resource);
-        return;
+        if (userName == connection.second)
+        {
+            suggestName = connection.second + "1";
+            return true;
+        }
     }
-    connections_[hdl] = name;
-    std::cout << name << std::endl;
-    SPDLOG_DEBUG("{} connect me.", name);
+    return false;
 }
 
 bool Server::onValidate(ConnHdl hdl)
@@ -193,7 +229,21 @@ void Server::onMessage(ConnHdl hdl, websocketpp::server<websocketpp::config::asi
     ls -- list current online user, can with options to query the user if the online user too many
     cd -- get the user who you want talk with, and current the clinet should check to that user channel
     */
-    wsServer_.send(hdl, "yes you are here. congratulation", websocketpp::frame::opcode::text);
+    std::stringstream out;
+    if (message == "ls")
+    {
+        out << "current online user list below: \n";
+        for (const auto &connection : connections_)
+        {
+            out << connection.second << "\n";
+        }
+        out << "congratulation";
+        wsServer_.send(hdl, out.str(), websocketpp::frame::opcode::text);
+    }
+    else
+    {
+        wsServer_.send(hdl, "congratulation", websocketpp::frame::opcode::text);
+    }
 }
 
 void Server::onClose(ConnHdl hdl)
