@@ -131,11 +131,32 @@ void Server::setHandlers()
 
 void Server::onOpen(ConnHdl hdl)
 {
-    SPDLOG_INFO("{} connect me.", wsServer_.get_con_from_hdl(hdl)->get_remote_endpoint());
-    connections_[hdl] = "";
+    SPDLOG_DEBUG("{} connect me.", wsServer_.get_con_from_hdl(hdl)->get_remote_endpoint());
+    // connections_[hdl] = "";
     SPDLOG_INFO("{} users online", connections_.size());
-    auto path = wsServer_.get_con_from_hdl(hdl)->get_resource();
-    SPDLOG_INFO("request resource {}.", path);
+    auto resource = wsServer_.get_con_from_hdl(hdl)->get_resource();
+    SPDLOG_INFO("request resource {}.", resource);
+    auto position = resource.find("name");
+    if (position == std::string::npos)
+    {
+        SPDLOG_ERROR("not indicate the username key in resource {}", resource);
+        return;
+    }
+    position = resource.find("=", position);
+    if (position == std::string::npos)
+    {
+        SPDLOG_ERROR("not indicate the username separator = in resource {}", resource);
+        return;
+    }
+    auto name = resource.substr(position + 1);
+    if (name.empty())
+    {
+        SPDLOG_ERROR("not indicate the username value in resource {}", resource);
+        return;
+    }
+    connections_[hdl] = name;
+    std::cout << name << std::endl;
+    SPDLOG_DEBUG("{} connect me.", name);
 }
 
 bool Server::onValidate(ConnHdl hdl)

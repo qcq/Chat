@@ -37,5 +37,6 @@ include(CTest)
 
 if(BUILD_TESTING)
     pkg_check_modules(GTEST REQUIRED gtest_main)
+    enable_testing()
     add_subdirectory(test)
 endif()
