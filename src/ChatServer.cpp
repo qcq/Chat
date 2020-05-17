@@ -3,9 +3,9 @@
 
 #include <boost/optional.hpp>
 
-#include <spdlog/spdlog.h>
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
+#include <spdlog/spdlog.h>
 
 #include "src/ChatConfig.h"
 
@@ -19,21 +19,23 @@ void initLogger(const std::string& loggerName)
 
     std::string logFileName = "logs/" + loggerName + ".txt";
 
-    auto file_sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(logFileName, true);
+    auto file_sink =
+        std::make_shared<spdlog::sinks::basic_file_sink_mt>(logFileName, true);
     file_sink->set_level(spdlog::level::debug);
-    spdlog::set_default_logger(std::make_shared<spdlog::logger>(loggerName,
-        spdlog::sinks_init_list({console_sink, file_sink})));
+    spdlog::set_default_logger(std::make_shared<spdlog::logger>(
+        loggerName, spdlog::sinks_init_list({console_sink, file_sink})));
     spdlog::flush_every(std::chrono::seconds(5));
 }
 
 int main()
 {
-    std::cout << "major:" << Chat_VERSION_MAJOR << " minor:" << Chat_VERSION_MINOR << std::endl;
+    std::cout << "major:" << Chat_VERSION_MAJOR
+              << " minor:" << Chat_VERSION_MINOR << std::endl;
     initLogger("server");
     auto server = std::make_shared<server::Server>();
     server->initialize();
 
     server->run();
-    //server->getIoService().run();
+    // server->getIoService().run();
     return 0;
 }

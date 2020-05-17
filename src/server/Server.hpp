@@ -2,19 +2,22 @@
 #define CHAT_SERVER_SERVER_HPP
 #include <map>
 
-#include <websocketpp/server.hpp>
 #include <websocketpp/config/asio.hpp>
+#include <websocketpp/server.hpp>
 
 #include <spdlog/spdlog.h>
 
+#include "MessageDispatcher.hpp"
 #include "interface/IServer.hpp"
+#include "interface/IWebSocketFacade.hpp"
 
 namespace server
 {
-class Server : public interface::IServer, public std::enable_shared_from_this<Server>
+class Server : public interface::IServer,
+               public interface::IWebSocketFacade,
+               public std::enable_shared_from_this<Server>
 {
 public:
-    typedef std::weak_ptr<void> ConnHdl;
     Server();
 
     void initialize() override;
@@ -27,10 +30,7 @@ public:
 
     void setDscp(unsigned int) override;
 
-    boost::asio::io_service &getIoService()
-    {
-        return ioService_;
-    }
+    boost::asio::io_service& getIoService() { return ioService_; }
 
     ~Server();
 
@@ -40,11 +40,13 @@ protected:
     void setHandlers();
 
     void onOpen(ConnHdl hdl);
-    std::string retrieveUserNameFromResource(const std::string &resource);
-    bool isNameExist(const std::string &userName, std::string &suggestName);
+    std::string retrieveUserNameFromResource(const std::string& resource);
+    bool isNameExist(const std::string& userName, std::string& suggestName);
 
     bool onValidate(ConnHdl hdl);
-    void onMessage(ConnHdl hdl, websocketpp::server<websocketpp::config::asio>::message_ptr ptr);
+    void onMessage(
+        ConnHdl hdl,
+        websocketpp::server<websocketpp::config::asio>::message_ptr ptr);
     void onClose(ConnHdl hdl);
 
 private:
@@ -53,7 +55,8 @@ private:
     boost::asio::io_context ioService_;
     websocketpp::server<websocketpp::config::asio> wsServer_;
     uint16_t port_;
-    std::map<ConnHdl, std::string, std::owner_less<ConnHdl>> connections_;
+    Connection connections_;
+    std::shared_ptr<MessageDispatcher> messageDispatcher;
 };
-} // namespace server
+}  // namespace server
 #endif
