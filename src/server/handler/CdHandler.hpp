@@ -13,7 +13,7 @@ public:
     CdHandler();
     ~CdHandler();
 
-    std::string handle(
+    void handle(
         const interface::IWebSocketFacade::ConnHdl& hdl, const std::string& message) override;
 
 private:

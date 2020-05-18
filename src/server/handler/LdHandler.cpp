@@ -10,10 +10,10 @@ LdHandler::LdHandler()
 LdHandler::~LdHandler()
 {}
 
-std::string LdHandler::handle(
+void LdHandler::handle(
     const interface::IWebSocketFacade::ConnHdl& hdl, const std::string& message)
 {
-    return "";
+    ;
 }
 } // namespace handler
 

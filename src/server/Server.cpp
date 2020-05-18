@@ -234,7 +234,7 @@ void Server::onMessage(ConnHdl hdl, websocketpp::server<websocketpp::config::asi
     2. worker process the message, then push two the second queue.
     3. a thread prosess the second queue to sent out message.
     */
-    auto messageOut = messageDispatcher->handleMessage(hdl, message);
+    messageDispatcher->handleMessage(hdl, message);
     // wsServer_.send(hdl, messageOut, websocketpp::frame::opcode::text);
     /*
     std::stringstream messageOut;

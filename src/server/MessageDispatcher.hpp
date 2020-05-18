@@ -24,7 +24,7 @@ public:
         const interface::IWebSocketFacade::Connection& connection);
     ~MessageDispatcher();
 
-    std::string handleMessage(
+    void handleMessage(
         const interface::IWebSocketFacade::ConnHdl& hdl, const std::string& message);
 
 private:

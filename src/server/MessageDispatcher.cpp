@@ -14,7 +14,7 @@ MessageDispatcher::MessageDispatcher(
 MessageDispatcher::~MessageDispatcher()
 {}
 
-std::string MessageDispatcher::handleMessage(
+void MessageDispatcher::handleMessage(
     const interface::IWebSocketFacade::ConnHdl& hdl, const std::string& message)
 {
     /*
@@ -27,15 +27,14 @@ std::string MessageDispatcher::handleMessage(
     if (message.find("ls") != std::string::npos)
     {
         SPDLOG_INFO("ls command received.");
-        return ldHandler->handle(hdl, message);
+        ldHandler->handle(hdl, message);
     }
     if (message.find("cd") != std::string::npos)
     {
         SPDLOG_INFO("cd command received.");
-        return cdHandler->handle(hdl, message);
+        cdHandler->handle(hdl, message);
     }
 
     // take as usual message
-    return "";
 }
 }  // namespace server

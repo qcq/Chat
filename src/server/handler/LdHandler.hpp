@@ -13,7 +13,7 @@ public:
     LdHandler();
     ~LdHandler();
 
-    std::string handle(const interface::IWebSocketFacade::ConnHdl& hdl, const std::string& message) override;
+    void handle(const interface::IWebSocketFacade::ConnHdl& hdl, const std::string& message) override;
 
 private:
 };

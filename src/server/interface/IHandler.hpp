@@ -12,7 +12,7 @@ namespace interface
 class IHandler
 {
 public:
-    virtual std::string handle(
+    virtual void handle(
         const interface::IWebSocketFacade::ConnHdl& hdl, const std::string& message) = 0;
 };
 }  // namespace interface

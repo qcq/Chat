@@ -10,10 +10,10 @@ CdHandler::CdHandler()
 CdHandler::~CdHandler()
 {}
 
-std::string CdHandler::handle(
+void CdHandler::handle(
     const interface::IWebSocketFacade::ConnHdl& hdl, const std::string& message)
 {
-    return "";
+    ;
 }
 }  // namespace handler
 
