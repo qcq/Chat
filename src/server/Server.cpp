@@ -13,11 +13,12 @@ Server::Server() : port_(7890), NAME_LABEL("name"), SEPARATOR("=")
     Source information do not appear when using custom format.
     */
     SPDLOG_INFO("created server.");
-    messageDispatcher = std::make_shared<MessageDispatcher>();
+    messageDispatcher = std::make_shared<MessageDispatcher>(wsServer_, connections_);
 }
 
 Server::~Server()
 {
+    m_thread->join();
     SPDLOG_INFO("the server ready to go down.");
     stop();
 }
@@ -153,9 +154,11 @@ void Server::onOpen(ConnHdl hdl)
         return;
     }
     connections_[hdl] = userName;
-    messageOut << "welcome " << userName;
+    messageOut << userName << " online";
     SPDLOG_DEBUG("{} connect me.", userName);
-    wsServer_.send(hdl, messageOut.str(), websocketpp::frame::opcode::text);
+    // here used thread will cause the
+    //m_thread.reset(new std::thread(std::bind(&Server::broadCast, this, messageOut.str())));
+    broadCast(messageOut.str());
 }
 
 std::string Server::retrieveUserNameFromResource(const std::string& resource)
@@ -189,6 +192,15 @@ bool Server::isNameExist(const std::string& userName, std::string& suggestName)
     return false;
 }
 
+void Server::broadCast(const std::string& message)
+{
+    for (const auto& connection : connections_)
+    {
+        SPDLOG_TRACE("broadcast message {} to {}.", message, connection.second);
+        wsServer_.send(connection.first, message, websocketpp::frame::opcode::text);
+    }
+}
+
 bool Server::onValidate(ConnHdl hdl)
 {
     auto connPtr = wsServer_.get_con_from_hdl(hdl);
@@ -215,9 +227,15 @@ bool Server::onValidate(ConnHdl hdl)
 void Server::onMessage(ConnHdl hdl, websocketpp::server<websocketpp::config::asio>::message_ptr ptr)
 {
     std::string message = ptr->get_payload();
-    SPDLOG_INFO("message received.{}", message);
-    auto messageOut = messageDispatcher->handleMessage(message);
-    wsServer_.send(hdl, messageOut, websocketpp::frame::opcode::text);
+    SPDLOG_INFO("message received - {}", message);
+    /*
+    may be split the process to two step queue, add the support of concurrence
+    1. push the received message into one queue.
+    2. worker process the message, then push two the second queue.
+    3. a thread prosess the second queue to sent out message.
+    */
+    auto messageOut = messageDispatcher->handleMessage(hdl, message);
+    // wsServer_.send(hdl, messageOut, websocketpp::frame::opcode::text);
     /*
     std::stringstream messageOut;
     if (message == "ls")

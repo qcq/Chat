@@ -52,3 +52,4 @@ So, I need to consider the difference between them. did below things:
 ### first step just add non-ssl enabled c/s
 
     do not care others, let it be work first.
+    should add thread support. and divide the code to class itself.

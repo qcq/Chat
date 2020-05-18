@@ -42,6 +42,7 @@ protected:
     void onOpen(ConnHdl hdl);
     std::string retrieveUserNameFromResource(const std::string& resource);
     bool isNameExist(const std::string& userName, std::string& suggestName);
+    void broadCast(const std::string& message);
 
     bool onValidate(ConnHdl hdl);
     void onMessage(
@@ -57,6 +58,7 @@ private:
     uint16_t port_;
     Connection connections_;
     std::shared_ptr<MessageDispatcher> messageDispatcher;
+    std::shared_ptr<std::thread> m_thread;
 };
 }  // namespace server
 #endif

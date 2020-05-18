@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include "IWebSocketFacade.hpp"
+
 namespace server
 {
 namespace interface
@@ -10,7 +12,8 @@ namespace interface
 class IHandler
 {
 public:
-    virtual std::string handle(const std::string& message) = 0;
+    virtual std::string handle(
+        const interface::IWebSocketFacade::ConnHdl& hdl, const std::string& message) = 0;
 };
 }  // namespace interface
 }  // namespace server

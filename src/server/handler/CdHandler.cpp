@@ -10,7 +10,8 @@ CdHandler::CdHandler()
 CdHandler::~CdHandler()
 {}
 
-std::string CdHandler::handle(const std::string& message)
+std::string CdHandler::handle(
+    const interface::IWebSocketFacade::ConnHdl& hdl, const std::string& message)
 {
     return "";
 }

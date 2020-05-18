@@ -1,6 +1,8 @@
 #ifndef SERVER_INTERFACE_IWEBSOCKETFACADE_HPP_
 #define SERVER_INTERFACE_IWEBSOCKETFACADE_HPP_
 
+#include <map>
+
 namespace server
 {
 namespace interface

@@ -10,7 +10,8 @@ LdHandler::LdHandler()
 LdHandler::~LdHandler()
 {}
 
-std::string LdHandler::handle(const std::string& message)
+std::string LdHandler::handle(
+    const interface::IWebSocketFacade::ConnHdl& hdl, const std::string& message)
 {
     return "";
 }
