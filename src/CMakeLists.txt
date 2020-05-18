@@ -33,9 +33,9 @@ target_compile_options(ChatServer PRIVATE -Werror)
 
 target_compile_options(ChatClient PRIVATE -Werror)
 
-target_compile_features(ChatServer PRIVATE cxx_std_20)
+target_compile_features(ChatServer PRIVATE cxx_std_17)
 
-target_compile_features(ChatClient PRIVATE cxx_std_20)
+target_compile_features(ChatClient PRIVATE cxx_std_17)
 
 target_link_libraries(ChatServer
     PUBLIC

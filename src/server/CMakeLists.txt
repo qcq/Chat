@@ -14,4 +14,4 @@ target_include_directories(${PROJECT_NAME}-server PUBLIC
                             ${CMAKE_SOURCE_DIR}/src/3rdparty
                             )
 
-target_compile_features(${PROJECT_NAME}-server PRIVATE cxx_std_20)
+target_compile_features(${PROJECT_NAME}-server PRIVATE cxx_std_17)

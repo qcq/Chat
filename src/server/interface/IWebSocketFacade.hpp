@@ -2,6 +2,7 @@
 #define SERVER_INTERFACE_IWEBSOCKETFACADE_HPP_
 
 #include <map>
+#include <memory>
 
 namespace server
 {
