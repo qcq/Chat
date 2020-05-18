@@ -19,8 +19,13 @@ set(ENV{PKG_CONFIG_PATH} "$ENV{PKG_CONFIG_PATH}:/usr/local/Cellar/openssl@1.1/1.
 
 include(FindPkgConfig)
 
-set(BOOST_INCLUDEDIR /usr/include/boost169)
-set(BOOST_LIBRARYDIR /usr/lib64/boost169)
+if (EXISTS /usr/include/boost169)
+    set(BOOST_INCLUDEDIR /usr/include/boost169)
+    set(BOOST_LIBRARYDIR /usr/lib64/boost169)
+elseif (EXISTS /usr/local/Cellar/boost/1.72.0_2)
+    set(BOOST_INCLUDEDIR /usr/local/Cellar/boost/1.72.0_2/include)
+    set(BOOST_LIBRARYDIR /usr/local/Cellar/boost/1.72.0_2/lib)
+endif ()
 
 set(Boost_COMPONENTS date_time regex system thread)
 find_package(Boost REQUIRED ${Boost_COMPONENTS})
