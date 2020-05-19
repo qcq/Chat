@@ -4,18 +4,17 @@ namespace server
 {
 MessageDispatcher::MessageDispatcher(
     const websocketpp::server<websocketpp::config::asio>& wsServer,
-    const interface::IWebSocketFacade::Connection& connection)
-    : wsServer_(wsServer), connections_(connection)
+    const interface::IWebSocketFacade::Connection& connections)
 {
-    ldHandler = std::make_shared<handler::LdHandler>();
-    cdHandler = std::make_shared<handler::CdHandler>();
+    lsHandler = std::make_shared<handler::LsHandler>(wsServer, connections);
+    cdHandler = std::make_shared<handler::CdHandler>(wsServer, connections);
 }
 
 MessageDispatcher::~MessageDispatcher()
 {}
 
 void MessageDispatcher::handleMessage(
-    const interface::IWebSocketFacade::ConnHdl& hdl, const std::string& message)
+    const interface::IWebSocketFacade::ConnHdl& hdl, std::string& message)
 {
     /*
     which helps to manage the connection.
@@ -27,7 +26,7 @@ void MessageDispatcher::handleMessage(
     if (message.find("ls") != std::string::npos)
     {
         SPDLOG_INFO("ls command received.");
-        ldHandler->handle(hdl, message);
+        lsHandler->handle(hdl, message);
     }
     if (message.find("cd") != std::string::npos)
     {
@@ -36,5 +35,6 @@ void MessageDispatcher::handleMessage(
     }
 
     // take as usual message
+
 }
 }  // namespace server

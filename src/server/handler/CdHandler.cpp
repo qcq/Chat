@@ -4,14 +4,17 @@ namespace server
 {
 namespace handler
 {
-CdHandler::CdHandler()
+CdHandler::CdHandler(
+    const websocketpp::server<websocketpp::config::asio>& wsServer,
+    const interface::IWebSocketFacade::Connection& connections)
+    : wsServer_(wsServer), connections_(connections)
 {}
 
 CdHandler::~CdHandler()
 {}
 
 void CdHandler::handle(
-    const interface::IWebSocketFacade::ConnHdl& hdl, const std::string& message)
+    const interface::IWebSocketFacade::ConnHdl& hdl, std::string& message)
 {
     ;
 }

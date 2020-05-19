@@ -11,6 +11,7 @@ add_library(${PROJECT_NAME}-testMain OBJECT
 
 set(test_cases
     server
+    util
 )
 
 foreach(test_case IN LISTS test_cases)

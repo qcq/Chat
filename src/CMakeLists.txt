@@ -8,6 +8,7 @@ add_subdirectory(client)
 add_executable(ChatServer
     ChatServer.cpp
     $<TARGET_OBJECTS:${PROJECT_NAME}-server>
+    $<TARGET_OBJECTS:${PROJECT_NAME}-util>
 )
 
 add_executable(ChatClient

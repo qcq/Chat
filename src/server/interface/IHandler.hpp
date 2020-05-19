@@ -13,7 +13,7 @@ class IHandler
 {
 public:
     virtual void handle(
-        const interface::IWebSocketFacade::ConnHdl& hdl, const std::string& message) = 0;
+        const interface::IWebSocketFacade::ConnHdl& hdl, std::string& message) = 0;
 };
 }  // namespace interface
 }  // namespace server

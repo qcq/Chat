@@ -1,6 +1,5 @@
 file(GLOB_RECURSE CHAT_SERVER_SOURCE_FILES
     ./*.cpp
-    ./*.hpp
 )
 
 add_library(${PROJECT_NAME}-server OBJECT
@@ -12,6 +11,7 @@ target_include_directories(${PROJECT_NAME}-server PUBLIC
                             # seems when downgrade the boost to 1.69 under mac also need this line.
                             ${Boost_INCLUDE_DIRS}
                             ${CMAKE_SOURCE_DIR}/src/3rdparty
+                            ${CMAKE_SOURCE_DIR}/src
                             )
 
 target_compile_features(${PROJECT_NAME}-server PRIVATE cxx_std_17)

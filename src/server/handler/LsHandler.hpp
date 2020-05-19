@@ -1,5 +1,5 @@
-#ifndef CHAT_SERVER_HANDLER_CDHANDLER_HPP
-#define CHAT_SERVER_HANDLER_CDHANDLER_HPP
+#ifndef CHAT_SERVER_HANDLER_LSHANDLER_HPP
+#define CHAT_SERVER_HANDLER_LSHANDLER_HPP
 
 #include <websocketpp/config/asio.hpp>
 #include <websocketpp/server.hpp>
@@ -11,21 +11,21 @@ namespace server
 {
 namespace handler
 {
-class CdHandler : public interface::IHandler
+class LsHandler : public interface::IHandler
 {
 public:
-    CdHandler(
+    LsHandler(
         const websocketpp::server<websocketpp::config::asio>& wsServer,
         const interface::IWebSocketFacade::Connection& connections);
-    ~CdHandler();
+    ~LsHandler();
 
-    void handle(
-        const interface::IWebSocketFacade::ConnHdl& hdl, std::string& message) override;
+    void handle(const interface::IWebSocketFacade::ConnHdl& hdl, std::string& message) override;
 
 private:
     const websocketpp::server<websocketpp::config::asio>& wsServer_;
     const interface::IWebSocketFacade::Connection& connections_;
 };
-}  // namespace handler
-}  // namespace server
+}
+}
+
 #endif

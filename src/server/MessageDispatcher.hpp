@@ -10,7 +10,7 @@
 #include <spdlog/spdlog.h>
 
 #include "handler/CdHandler.hpp"
-#include "handler/LdHandler.hpp"
+#include "handler/LsHandler.hpp"
 
 #include "interface/IWebSocketFacade.hpp"
 
@@ -21,16 +21,14 @@ class MessageDispatcher
 public:
     MessageDispatcher(
         const websocketpp::server<websocketpp::config::asio>& wsServer,
-        const interface::IWebSocketFacade::Connection& connection);
+        const interface::IWebSocketFacade::Connection& connections);
     ~MessageDispatcher();
 
     void handleMessage(
-        const interface::IWebSocketFacade::ConnHdl& hdl, const std::string& message);
+        const interface::IWebSocketFacade::ConnHdl& hdl, std::string& message);
 
 private:
-    const websocketpp::server<websocketpp::config::asio>& wsServer_;
-    const interface::IWebSocketFacade::Connection& connections_;
-    std::shared_ptr<handler::LdHandler> ldHandler;
+    std::shared_ptr<handler::LsHandler> lsHandler;
     std::shared_ptr<handler::CdHandler> cdHandler;
 };
 

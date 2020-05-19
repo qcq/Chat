@@ -18,7 +18,7 @@ Server::Server() : port_(7890), NAME_LABEL("name"), SEPARATOR("=")
 
 Server::~Server()
 {
-    m_thread->join();
+    // m_thread->join();
     SPDLOG_INFO("the server ready to go down.");
     stop();
 }

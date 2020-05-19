@@ -1,27 +1,22 @@
-set(SUT ${PROJECT_NAME}-server-UT)
+set(SUT ${PROJECT_NAME}-util-UT)
 
 include_directories(
         ${CMAKE_CURRENT_SOURCE_DIR}
         ${PROJECT_SOURCE_DIR}/src
-        ${PROJECT_SOURCE_DIR}/src/server
-        ${PROJECT_SOURCE_DIR}/src/3rdparty
+        ${PROJECT_SOURCE_DIR}/src/util
 )
 
 add_library(${SUT}_lib OBJECT
-        ServerTest.cpp
+        StringUtilsTest.cpp
         )
 
 add_executable(${SUT} EXCLUDE_FROM_ALL
         $<TARGET_OBJECTS:${SUT}_lib>
         $<TARGET_OBJECTS:${PROJECT_NAME}-testMain>
-        $<TARGET_OBJECTS:${PROJECT_NAME}-server>
         $<TARGET_OBJECTS:${PROJECT_NAME}-util>)
 
 target_link_libraries(${SUT}
         ${GTEST_LIBRARIES}
-        Boost::thread
-        OpenSSL::SSL
-        OpenSSL::Crypto
 )
 
 add_test(
