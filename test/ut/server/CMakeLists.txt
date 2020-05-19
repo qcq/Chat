@@ -1,12 +1,5 @@
 set(SUT ${PROJECT_NAME}-server-UT)
 
-include_directories(
-        ${CMAKE_CURRENT_SOURCE_DIR}
-        ${PROJECT_SOURCE_DIR}/src
-        ${PROJECT_SOURCE_DIR}/src/server
-        ${PROJECT_SOURCE_DIR}/src/3rdparty
-)
-
 add_library(${SUT}_lib OBJECT
         ServerTest.cpp
         )
@@ -16,6 +9,13 @@ add_executable(${SUT} EXCLUDE_FROM_ALL
         $<TARGET_OBJECTS:${PROJECT_NAME}-testMain>
         $<TARGET_OBJECTS:${PROJECT_NAME}-server>
         $<TARGET_OBJECTS:${PROJECT_NAME}-util>)
+
+target_include_directories(${SUT}_lib PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}
+        ${PROJECT_SOURCE_DIR}/src
+        ${PROJECT_SOURCE_DIR}/src/server
+        ${PROJECT_SOURCE_DIR}/src/3rdparty
+)
 
 target_link_libraries(${SUT}
         ${GTEST_LIBRARIES}
