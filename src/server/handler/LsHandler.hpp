@@ -15,14 +15,14 @@ class LsHandler : public interface::IHandler
 {
 public:
     LsHandler(
-        const websocketpp::server<websocketpp::config::asio>& wsServer,
+        websocketpp::server<websocketpp::config::asio>& wsServer,
         const interface::IWebSocketFacade::Connection& connections);
     ~LsHandler();
 
     void handle(const interface::IWebSocketFacade::ConnHdl& hdl, std::string& message) override;
 
 private:
-    const websocketpp::server<websocketpp::config::asio>& wsServer_;
+    websocketpp::server<websocketpp::config::asio>& wsServer_;
     const interface::IWebSocketFacade::Connection& connections_;
 };
 }

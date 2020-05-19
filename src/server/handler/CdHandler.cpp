@@ -5,7 +5,7 @@ namespace server
 namespace handler
 {
 CdHandler::CdHandler(
-    const websocketpp::server<websocketpp::config::asio>& wsServer,
+    websocketpp::server<websocketpp::config::asio>& wsServer,
     const interface::IWebSocketFacade::Connection& connections)
     : wsServer_(wsServer), connections_(connections)
 {}

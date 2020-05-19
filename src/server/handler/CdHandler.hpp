@@ -15,7 +15,7 @@ class CdHandler : public interface::IHandler
 {
 public:
     CdHandler(
-        const websocketpp::server<websocketpp::config::asio>& wsServer,
+        websocketpp::server<websocketpp::config::asio>& wsServer,
         const interface::IWebSocketFacade::Connection& connections);
     ~CdHandler();
 
@@ -23,7 +23,7 @@ public:
         const interface::IWebSocketFacade::ConnHdl& hdl, std::string& message) override;
 
 private:
-    const websocketpp::server<websocketpp::config::asio>& wsServer_;
+    websocketpp::server<websocketpp::config::asio>& wsServer_;
     const interface::IWebSocketFacade::Connection& connections_;
 };
 }  // namespace handler

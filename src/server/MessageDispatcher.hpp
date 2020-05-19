@@ -20,7 +20,7 @@ class MessageDispatcher
 {
 public:
     MessageDispatcher(
-        const websocketpp::server<websocketpp::config::asio>& wsServer,
+        websocketpp::server<websocketpp::config::asio>& wsServer,
         const interface::IWebSocketFacade::Connection& connections);
     ~MessageDispatcher();
 

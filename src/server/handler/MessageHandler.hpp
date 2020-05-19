@@ -15,13 +15,13 @@ class MessageHandler : public interface::IHandler
 {
 public:
     MessageHandler(
-        const websocketpp::server<websocketpp::config::asio>& wsServer,
+        websocketpp::server<websocketpp::config::asio>& wsServer,
         const interface::IWebSocketFacade::Connection& connections);
     ~MessageHandler();
     void handle(
         const interface::IWebSocketFacade::ConnHdl& hdl, std::string& message) override;
 private:
-    const websocketpp::server<websocketpp::config::asio>& wsServer_;
+    websocketpp::server<websocketpp::config::asio>& wsServer_;
     const interface::IWebSocketFacade::Connection& connections_;
 };
 }

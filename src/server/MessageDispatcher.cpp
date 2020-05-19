@@ -3,7 +3,7 @@
 namespace server
 {
 MessageDispatcher::MessageDispatcher(
-    const websocketpp::server<websocketpp::config::asio>& wsServer,
+    websocketpp::server<websocketpp::config::asio>& wsServer,
     const interface::IWebSocketFacade::Connection& connections)
 {
     lsHandler = std::make_shared<handler::LsHandler>(wsServer, connections);
