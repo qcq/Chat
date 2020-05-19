@@ -1,14 +1,14 @@
 set(SUT ${PROJECT_NAME}-util-UT)
 
-include_directories(
+add_library(${SUT}_lib OBJECT
+        StringUtilsTest.cpp
+        )
+
+target_include_directories(${SUT}_lib PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}
         ${PROJECT_SOURCE_DIR}/src
         ${PROJECT_SOURCE_DIR}/src/util
 )
-
-add_library(${SUT}_lib OBJECT
-        StringUtilsTest.cpp
-        )
 
 add_executable(${SUT} EXCLUDE_FROM_ALL
         $<TARGET_OBJECTS:${SUT}_lib>
