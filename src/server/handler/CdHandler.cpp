@@ -22,6 +22,8 @@ void CdHandler::handle(const interface::IWebSocketFacade::ConnHdl& hdl, std::str
 {
     auto str = util::StringUtils::removeDupilcateSpace(message);
     str = util::StringUtils::trim(message);
+    // remove the username prefix
+    str.erase(0, str.find(":") + 1);
     if (str == "cd")
     {
         wsServer_.send(

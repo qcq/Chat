@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <sstream>
 
+#include <util/AnsiColors.hpp>
 #include <util/StringUtils.hpp>
 #include "LsHandler.hpp"
 
@@ -21,18 +22,21 @@ void LsHandler::handle(const interface::IWebSocketFacade::ConnHdl& hdl, std::str
 {
     auto str = util::StringUtils::removeDupilcateSpace(message);
     str = util::StringUtils::trim(message);
+    // remove the username prefix
+    str.erase(0, str.find(":") + 1);
     std::stringstream out;
     out << "current online user list below: \n";
+
     if (str == "ls")
     {
         for (const auto& connection : connections_)
         {
             out << connection.second << "\n";
         }
-        wsServer_.send(hdl, out.str(), websocketpp::frame::opcode::text);
+        wsServer_.send(hdl, util::AnsiColors::GREEN + out.str(), websocketpp::frame::opcode::text);
         return;
     }
-    // remove the ls plus space
+    // remove the ls and space
     str.erase(0, 3);
     auto names = util::StringUtils::splitStringBy(str, " ");
 
@@ -47,7 +51,7 @@ void LsHandler::handle(const interface::IWebSocketFacade::ConnHdl& hdl, std::str
             out << connection.second << "\n";
         }
     }
-    wsServer_.send(hdl, out.str(), websocketpp::frame::opcode::text);
+    wsServer_.send(hdl, util::AnsiColors::GREEN + out.str(), websocketpp::frame::opcode::text);
 }
 }  // namespace handler
 

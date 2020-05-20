@@ -3,6 +3,8 @@
 #include <iostream>
 #include <sstream>
 
+#include <util/AnsiColors.hpp>
+
 namespace server
 {
 
@@ -32,8 +34,7 @@ void Server::initialize()
     // std::ofstream fout(logName, std::ios::out);
 
     wsServer_.get_alog().set_ostream(&std::cout);
-    wsServer_.set_access_channels(
-        websocketpp::log::alevel::all ^ websocketpp::log::alevel::frame_payload);
+    wsServer_.set_access_channels(websocketpp::log::alevel::frame_payload);
     wsServer_.set_error_channels(websocketpp::log::elevel::all);
 
     std::error_code initEc;
@@ -140,25 +141,30 @@ void Server::onOpen(ConnHdl hdl)
     {
         SPDLOG_ERROR("not indicate the username value in resource {}", resource);
         messageOut << "not indicate the username value in url";
-        wsServer_.send(hdl, messageOut.str(), websocketpp::frame::opcode::text);
+        wsServer_
+            .send(hdl, util::AnsiColors::RED + messageOut.str(), websocketpp::frame::opcode::text);
         return;
     }
     // check whether same user name already exist, and give the suggest name.
     std::string suggestName;
     if (isNameExist(userName, suggestName))
     {
-        messageOut << "The user name " << userName << "already used by others, may be you can use "
-                   << suggestName << " instead.";
+        messageOut << "The user name " << userName << " already used by others, use " << suggestName
+                   << " instead.";
         SPDLOG_ERROR(messageOut.str());
-        wsServer_.send(hdl, messageOut.str(), websocketpp::frame::opcode::text);
+        wsServer_.send(
+            hdl, util::AnsiColors::YELLOW + messageOut.str(), websocketpp::frame::opcode::text);
         connections_[hdl] = suggestName;
+        userName = suggestName;
         return;
     }
-    connections_[hdl] = userName;
+    else
+    {
+        connections_[hdl] = userName;
+    }
     messageOut << userName << " online";
     SPDLOG_DEBUG("{} connect me.", userName);
     // here used thread will cause the
-    // m_thread.reset(new std::thread(std::bind(&Server::broadCast, this, messageOut.str())));
     broadCast(messageOut.str());
 }
 
@@ -198,7 +204,10 @@ void Server::broadCast(const std::string& message)
     for (const auto& connection : connections_)
     {
         SPDLOG_TRACE("broadcast message {} to {}.", message, connection.second);
-        wsServer_.send(connection.first, message, websocketpp::frame::opcode::text);
+        wsServer_.send(
+            connection.first,
+            util::AnsiColors::BLUE + "Broadcast: " + message,
+            websocketpp::frame::opcode::text);
     }
 }
 
