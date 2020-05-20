@@ -55,7 +55,7 @@ void CdHandler::handle(const interface::IWebSocketFacade::ConnHdl& hdl, std::str
             websocketpp::frame::opcode::text);
         return;
     }
-    wsServer_.send(hdl, "you are going talk to " + names[0], websocketpp::frame::opcode::text);
+    wsServer_.send(hdl, names[0] + ": you are going talk to " + names[0], websocketpp::frame::opcode::text);
 }
 }  // namespace handler
 

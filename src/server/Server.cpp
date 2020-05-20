@@ -151,6 +151,7 @@ void Server::onOpen(ConnHdl hdl)
                    << suggestName << " instead.";
         SPDLOG_ERROR(messageOut.str());
         wsServer_.send(hdl, messageOut.str(), websocketpp::frame::opcode::text);
+        connections_[hdl] = suggestName;
         return;
     }
     connections_[hdl] = userName;
