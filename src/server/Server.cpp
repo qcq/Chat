@@ -157,7 +157,7 @@ void Server::onOpen(ConnHdl hdl)
     messageOut << userName << " online";
     SPDLOG_DEBUG("{} connect me.", userName);
     // here used thread will cause the
-    //m_thread.reset(new std::thread(std::bind(&Server::broadCast, this, messageOut.str())));
+    // m_thread.reset(new std::thread(std::bind(&Server::broadCast, this, messageOut.str())));
     broadCast(messageOut.str());
 }
 
@@ -235,42 +235,17 @@ void Server::onMessage(ConnHdl hdl, websocketpp::server<websocketpp::config::asi
     3. a thread prosess the second queue to sent out message.
     */
     messageDispatcher->handleMessage(hdl, message);
-    // wsServer_.send(hdl, messageOut, websocketpp::frame::opcode::text);
-    /*
-    std::stringstream messageOut;
-    if (message == "ls")
-    {
-        messageOut << "current online user list below: \n";
-        for (const auto& connection : connections_)
-        {
-            messageOut << connection.second << "\n";
-        }
-        messageOut << "congratulation";
-        wsServer_.send(hdl, messageOut.str(), websocketpp::frame::opcode::text);
-    }
-    else if (message.starts_with("cd"))
-    {
-        if (message.find("..") != std::string::npos)
-        {
-            // here should delete the connection which used before.
-            // if the previous connection non-exist, just sent message which to
-            // indicate error.
-        }
-        // reterive the user which want to talk
-        auto userWantTalk = message.substr(message.find_first_of(" ") + 1);
-    }
-    else
-    {
-        wsServer_.send(hdl, "congratulation", websocketpp::frame::opcode::text);
-    }
-    */
 }
 
 void Server::onClose(ConnHdl hdl)
 {
     // should remove the closed user
-    SPDLOG_INFO("{} disconnect me.", wsServer_.get_con_from_hdl(hdl)->get_remote_endpoint());
+    auto offlineUser = connections_[hdl];
+    SPDLOG_INFO("{} disconnect me.", offlineUser);
     connections_.erase(hdl);
+    std::stringstream out;
+    out << offlineUser << " off line";
+    broadCast(out.str());
 
     SPDLOG_INFO("{} users online", connections_.size());
 }
