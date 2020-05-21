@@ -4,6 +4,8 @@
 #include <util/AnsiColors.hpp>
 #include <util/StringUtils.hpp>
 
+#include <spdlog/spdlog.h>
+
 #include "CdHandler.hpp"
 
 namespace server
@@ -22,9 +24,10 @@ CdHandler::~CdHandler()
 void CdHandler::handle(const interface::IWebSocketFacade::ConnHdl& hdl, std::string& message)
 {
     auto str = util::StringUtils::removeDupilcateSpace(message);
-    str = util::StringUtils::trim(message);
+    str = util::StringUtils::trim(str);
     // remove the username prefix
     str.erase(0, str.find(":") + 1);
+    SPDLOG_DEBUG(str);
     if (str == "cd")
     {
         wsServer_.send(
@@ -60,6 +63,7 @@ void CdHandler::handle(const interface::IWebSocketFacade::ConnHdl& hdl, std::str
             hdl,
             util::AnsiColors::YELLOW + "you closed the talk.",
             websocketpp::frame::opcode::text);
+        return;
     }
     // here should record who talk who
     auto iter =

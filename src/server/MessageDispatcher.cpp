@@ -28,11 +28,13 @@ void MessageDispatcher::handleMessage(
     {
         SPDLOG_INFO("ls command received.");
         lsHandler->handle(hdl, message);
+        return;
     }
     if (message.find("cd") != std::string::npos)
     {
         SPDLOG_INFO("cd command received.");
         cdHandler->handle(hdl, message);
+        return;
     }
 
     // take as usual message

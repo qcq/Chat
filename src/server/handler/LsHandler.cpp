@@ -21,7 +21,7 @@ LsHandler::~LsHandler()
 void LsHandler::handle(const interface::IWebSocketFacade::ConnHdl& hdl, std::string& message)
 {
     auto str = util::StringUtils::removeDupilcateSpace(message);
-    str = util::StringUtils::trim(message);
+    str = util::StringUtils::trim(str);
     // remove the username prefix
     str.erase(0, str.find(":") + 1);
     std::stringstream out;
