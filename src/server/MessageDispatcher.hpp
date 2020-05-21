@@ -11,6 +11,7 @@
 
 #include "handler/CdHandler.hpp"
 #include "handler/LsHandler.hpp"
+#include "handler/MessageHandler.hpp"
 
 #include "interface/IWebSocketFacade.hpp"
 
@@ -30,6 +31,7 @@ public:
 private:
     std::shared_ptr<handler::LsHandler> lsHandler;
     std::shared_ptr<handler::CdHandler> cdHandler;
+    std::shared_ptr<handler::MessageHandler> messageHandler;
 };
 
 }  // namespace server

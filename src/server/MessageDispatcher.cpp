@@ -8,6 +8,7 @@ MessageDispatcher::MessageDispatcher(
 {
     lsHandler = std::make_shared<handler::LsHandler>(wsServer, connections);
     cdHandler = std::make_shared<handler::CdHandler>(wsServer, connections);
+    messageHandler = std::make_shared<handler::MessageHandler>(wsServer, connections);
 }
 
 MessageDispatcher::~MessageDispatcher()
@@ -35,6 +36,6 @@ void MessageDispatcher::handleMessage(
     }
 
     // take as usual message
-
+    messageHandler->handle(hdl, message);
 }
 }  // namespace server

@@ -47,6 +47,15 @@ void CdHandler::handle(const interface::IWebSocketFacade::ConnHdl& hdl, std::str
     // exit the talk
     if (names[0] == "..")
     {
+        if (connections_[hdl].talkingTo.empty())
+        {
+            wsServer_.send(
+                hdl,
+                util::AnsiColors::RED + "not talking to anyone, illegal",
+                websocketpp::frame::opcode::text);
+            return;
+        }
+        connections_[hdl].talkingTo = "";
         wsServer_.send(
             hdl,
             util::AnsiColors::YELLOW + "you closed the talk.",

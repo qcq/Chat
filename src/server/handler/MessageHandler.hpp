@@ -18,12 +18,12 @@ public:
         websocketpp::server<websocketpp::config::asio>& wsServer,
         interface::IWebSocketFacade::Connection& connections);
     ~MessageHandler();
-    void handle(
-        const interface::IWebSocketFacade::ConnHdl& hdl, std::string& message) override;
+    void handle(const interface::IWebSocketFacade::ConnHdl& hdl, std::string& message) override;
+
 private:
     websocketpp::server<websocketpp::config::asio>& wsServer_;
     interface::IWebSocketFacade::Connection& connections_;
 };
-}
-}
+}  // namespace handler
+}  // namespace server
 #endif
