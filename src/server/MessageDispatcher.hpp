@@ -21,7 +21,7 @@ class MessageDispatcher
 public:
     MessageDispatcher(
         websocketpp::server<websocketpp::config::asio>& wsServer,
-        const interface::IWebSocketFacade::Connection& connections);
+        interface::IWebSocketFacade::Connection& connections);
     ~MessageDispatcher();
 
     void handleMessage(

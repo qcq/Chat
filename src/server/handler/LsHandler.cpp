@@ -11,7 +11,7 @@ namespace handler
 {
 LsHandler::LsHandler(
     websocketpp::server<websocketpp::config::asio>& wsServer,
-    const interface::IWebSocketFacade::Connection& connections)
+    interface::IWebSocketFacade::Connection& connections)
     : wsServer_(wsServer), connections_(connections)
 {}
 
@@ -31,7 +31,7 @@ void LsHandler::handle(const interface::IWebSocketFacade::ConnHdl& hdl, std::str
     {
         for (const auto& connection : connections_)
         {
-            out << connection.second << "\n";
+            out << connection.second.userName << "\n";
         }
         wsServer_.send(hdl, util::AnsiColors::GREEN + out.str(), websocketpp::frame::opcode::text);
         return;
@@ -44,11 +44,11 @@ void LsHandler::handle(const interface::IWebSocketFacade::ConnHdl& hdl, std::str
     {
         auto iter =
             std::find_if(names.begin(), names.end(), [&connection](const std::string& name) {
-                return connection.second.find(name) != std::string::npos;
+                return connection.second.userName.find(name) != std::string::npos;
             });
         if (iter != names.end())
         {
-            out << connection.second << "\n";
+            out << connection.second.userName << "\n";
         }
     }
     wsServer_.send(hdl, util::AnsiColors::GREEN + out.str(), websocketpp::frame::opcode::text);

@@ -4,6 +4,7 @@
 #include <sstream>
 
 #include <util/AnsiColors.hpp>
+#include "UserManager.hpp"
 
 namespace server
 {
@@ -147,6 +148,7 @@ void Server::onOpen(ConnHdl hdl)
     }
     // check whether same user name already exist, and give the suggest name.
     std::string suggestName;
+    UserInfo userInfo;
     if (isNameExist(userName, suggestName))
     {
         messageOut << "The user name " << userName << " already used by others, use " << suggestName
@@ -154,16 +156,17 @@ void Server::onOpen(ConnHdl hdl)
         SPDLOG_ERROR(messageOut.str());
         wsServer_.send(
             hdl, util::AnsiColors::YELLOW + messageOut.str(), websocketpp::frame::opcode::text);
-        connections_[hdl] = suggestName;
-        userName = suggestName;
+        userInfo.userName = suggestName;
         return;
     }
     else
     {
-        connections_[hdl] = userName;
+        userInfo.userName = userName;
+
     }
-    messageOut << userName << " online";
-    SPDLOG_DEBUG("{} connect me.", userName);
+    connections_[hdl] = userInfo;
+    messageOut << userInfo.userName << " online";
+    SPDLOG_DEBUG("{} connect me.", userInfo.userName);
     // here used thread will cause the
     broadCast(messageOut.str());
 }
@@ -190,9 +193,9 @@ bool Server::isNameExist(const std::string& userName, std::string& suggestName)
 {
     for (const auto& connection : connections_)
     {
-        if (userName == connection.second)
+        if (userName == connection.second.userName)
         {
-            suggestName = connection.second + "1";
+            suggestName = connection.second.userName + "1";
             return true;
         }
     }
@@ -251,10 +254,10 @@ void Server::onClose(ConnHdl hdl)
 {
     // should remove the closed user
     auto offlineUser = connections_[hdl];
-    SPDLOG_INFO("{} disconnect me.", offlineUser);
+    SPDLOG_INFO("{} disconnect me.", offlineUser.userName);
     connections_.erase(hdl);
     std::stringstream out;
-    out << offlineUser << " off line";
+    out << offlineUser.userName << " off line";
     broadCast(out.str());
 
     SPDLOG_INFO("{} users online", connections_.size());

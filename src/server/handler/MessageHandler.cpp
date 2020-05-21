@@ -8,7 +8,7 @@ namespace handler
 {
 MessageHandler::MessageHandler(
     websocketpp::server<websocketpp::config::asio>& wsServer,
-    const interface::IWebSocketFacade::Connection& connections)
+    interface::IWebSocketFacade::Connection& connections)
     : wsServer_(wsServer), connections_(connections)
 {}
 

@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <sstream>
 
+#include <util/AnsiColors.hpp>
 #include <util/StringUtils.hpp>
 
 #include "CdHandler.hpp"
@@ -11,7 +12,7 @@ namespace handler
 {
 CdHandler::CdHandler(
     websocketpp::server<websocketpp::config::asio>& wsServer,
-    const interface::IWebSocketFacade::Connection& connections)
+    interface::IWebSocketFacade::Connection& connections)
     : wsServer_(wsServer), connections_(connections)
 {}
 
@@ -27,7 +28,9 @@ void CdHandler::handle(const interface::IWebSocketFacade::ConnHdl& hdl, std::str
     if (str == "cd")
     {
         wsServer_.send(
-            hdl, "plese indicate one user who you want talk to.", websocketpp::frame::opcode::text);
+            hdl,
+            util::AnsiColors::RED + "plese indicate one user who you want talk to.",
+            websocketpp::frame::opcode::text);
         return;
     }
     // remove the 'cd ' from the message
@@ -36,28 +39,37 @@ void CdHandler::handle(const interface::IWebSocketFacade::ConnHdl& hdl, std::str
     if (names.size() > 1)
     {
         wsServer_.send(
-            hdl, "plese indicate one user who you want talk to.", websocketpp::frame::opcode::text);
+            hdl,
+            util::AnsiColors::RED + "plese indicate one user who you want talk to.",
+            websocketpp::frame::opcode::text);
         return;
     }
     // exit the talk
     if (names[0] == "..")
     {
-        wsServer_.send(hdl, "you closed the talk.", websocketpp::frame::opcode::text);
+        wsServer_.send(
+            hdl,
+            util::AnsiColors::YELLOW + "you closed the talk.",
+            websocketpp::frame::opcode::text);
     }
     // here should record who talk who
     auto iter =
         std::find_if(connections_.begin(), connections_.end(), [&names](const auto& connection) {
-            return connection.second == names[0];
+            return connection.second.userName == names[0];
         });
     if (iter == connections_.end())
     {
         wsServer_.send(
             hdl,
-            "plese indicate one exit user who you want talk to.",
+            util::AnsiColors::RED + "plese indicate one exit user who you want talk to.",
             websocketpp::frame::opcode::text);
         return;
     }
-    wsServer_.send(hdl, names[0] + ": you are going talk to " + names[0], websocketpp::frame::opcode::text);
+    connections_[hdl].talkingTo = names[0];
+    wsServer_.send(
+        hdl,
+        util::AnsiColors::YELLOW + "Me: going talk to " + names[0],
+        websocketpp::frame::opcode::text);
 }
 }  // namespace handler
 
