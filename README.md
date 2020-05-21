@@ -1,22 +1,32 @@
 # Chat
 
-Chat is one app which try to implement the C/S archecture. Chat is based on the websocket as the message chaneel which makes the coding simple. Right now, This is just a scrach project which just begin.
+Chat is one app which try to implement the C/S archecture. Chat is based on the websocket as the message channel which makes the coding simple. Right now, This is just a scrach project which just begin.
+
+## Software looks below
+
+![demo](./images/demo.png)
 
 ## embeded tech
 
 * websocket
 
-    come to this time, when I check more options for C++ version of websocket, ther exist boost.beast
-    except the websocketpp, but seems boost version is not easy to understand. But, I inist to learn
+    come to this time, when I check more options for C++ version of websocket, there exist boost.beast
+    except the websocketpp, but seems boost version is not easy to understand. But, I inisit to learn
     it with patience.
+
+    current version is written in websocketpp, may be one ay re-write it in boost.
 
 * cmake
 
+    apparently, this is cmake project.
+
 * gtest
+
+    introduce ut with gtest.
 
 * emake https://github.com/skywind3000/emake
 
-    seems this compile method is more simpler than cmake, just need include main.mak
+    seems this compile method is more simpler than cmake, just need include main.mak, not update the main.mak in time.
 
 * consider add the support of protocal buf of google
 

@@ -25,7 +25,7 @@ void LsHandler::handle(const interface::IWebSocketFacade::ConnHdl& hdl, std::str
     // remove the username prefix
     str.erase(0, str.find(":") + 1);
     std::stringstream out;
-    out << "current online user list below: \n";
+    out << "current " << connections_.size() << " online user list below: \n";
 
     if (str == "ls")
     {
