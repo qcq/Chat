@@ -19,12 +19,19 @@ The Software use the string from the start to end, The server receive the string
 
 **cd** has below behiviours
 
-* *cd ..*, means exit the communication with the current user
-* *cd username*, means the current switch the channel to the wanted talking online user
+* *cd ..*, means exit the communication with the current user.
+* *cd username*, means the current switch the channel to the wanted talking online user.
     
 **ususal** the common message
 
 * common message, which will route to the user which want to talk.
+
+Addtional: Define some Ansi colors, which to indicate the color for the message itself.
+
+* for red message, The server indicate the user error info.
+* for yellow message, The server indicate the user warning info.
+* for blue message, the server indicate the broadcast message to indicate who is online or offline now.
+* for green meesgae, which as usual message.
 
 
 The Software not need the registeration liked things. for right now, just need the userself to give a user name when they use this commandline app.
