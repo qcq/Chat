@@ -1,10 +1,15 @@
 # Chat
 
-Chat is one app which try to implement the C/S archecture. Chat is based on the websocket as the message channel which makes the coding simple. Right now, This is just a scrach project which just begin.
+Chat is one app which try to implement the C/S archecture.
+Chat is based on the websocket as the message channel which makes the coding simple.
+Right now, This is just a scrach project which just begin.
+By now, the server side first version finished--just with the feature of text-based streaming. for test reason implement one python version cient which test the server side.
 
 ## Software looks below
 
 ![demo](./images/demo.png)
+
+## Description
 
 ## embeded tech
 
